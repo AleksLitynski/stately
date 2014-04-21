@@ -1,0 +1,237 @@
+/*stately({
+	name: "a",
+	desc: "sets up part a",
+	what: function(state){
+
+		state.source({
+			name: "abc",
+			desc: "Set abc to a random value",
+			what: function(state){
+
+			}
+
+		})
+
+
+	}
+
+
+})
+
+
+
+*/
+
+
+
+var stately = {a:"nope"};
+
+
+console.log(stately.a);
+
+(function(state){
+	state.a = "yup";
+})(stately);
+
+console.log(stately.a);
+
+
+
+
+state.of("loaded", function(loaded){
+
+
+})
+
+
+//setting a state
+state.of("loaded").flowsFrom("15")
+state.of("loaded").flowsInto(function(loaded){
+	loaded() //<- get value up object
+	loaded.of()
+	//use loaded here
+})
+
+
+
+
+state.of(function(eee){
+
+
+	return false;//to cancel event. No return to continue
+}).is("loaded")
+
+/*
+state.of("loaded").and("bear").is(in(function(loaded){
+
+})
+*/
+
+
+console.log( (function(){})() ) //undefined
+console.log( (function(){return false;})() ) //false
+
+
+
+
+
+
+//get the current state object
+state
+
+//get the current value (all will return the current value)
+state({why: "The reason you are accessing the value. Optional", tags: "3"}) //if it's blank or an object, it's a read. If it's a string, it's the child object.
+
+//assign a variable to the state node, triggers all listeners
+state.is("go", {why: "The reason you are writing to the value. Optional", tags: "3"}) //note annotation is optional. 
+
+//add a listener by passing a function.
+//listeners "return true" to re-register listener
+state(function(state){
+
+})
+
+//get the child state object
+state("child")
+
+//get child state
+state("child").is()
+
+//listener on child of child
+//if you ask for a child that doesn't exist, it will be created,
+//	not error out
+state("child")("nested_child")(function(nested_child){
+
+	nested_child //state object
+	nested_child() //value of state
+})
+
+
+{
+	listeners: [],
+	value: "",
+	children: {}, //more state objects, just like this
+	history: [
+		{
+			value: "old_value",
+		 	tags:  "tags to let you search history for a previous state",
+		 	why:   "reason for transaction",
+		 	type:  "in" || "out"
+		 }
+	] //every time "is" is called, we an "in or out" and an optional reason for the transaction
+}
++ is
++ ( )
+
+
+
+//Only do this once per s
+state = stately(
+
+{
+	val: "number", // Leafs are always "number" or "string"
+	kids: {
+		two: "string" //objects can have lists + numbers + strings
+	},
+	listy_loo: [ //each list item must match the sample list item's format.
+		{a:"number", b:"string", c:["number"]}
+	]
+}
+
+
+)
+
+state() //-> returns the whole state object
+state().val() //-> returns the number val is set to
+state().kids().two() //-> returns the state of "two"
+state().listy_loo()
+	.get(index)
+	.insert_before(index, /*Object to insert must match pattern specified*/)
+	.insert_after (index, /*Object to insert must match pattern specified*/)
+	.remove_before(index)
+	.remove_after (index)
+	.iter()
+	.length()
+state().val(5) //-> sets the leaf to 5. Also triggers all events listening to the leaf
+state.val(function(state){
+	//called whenever "state" itself is changed
+	//note: you can only put listeners onto leafs, for now!
+
+	//return true from this function to re-register yourself as a state listener, any other return (or no return) will unregister you
+})
+
+
+//Todo, not today: 
+//	-history
+	/*
+
+		history: [
+			{
+				value: "old_value",
+			 	tags:  "tags to let you search history for a previous state",
+			 	why:   "reason for transaction",
+			 	type:  "in" || "out"
+			 }
+		] //every time "is" is called, we an "in or out" and an optional reason for the transaction
+	*/
+//	-able to listen to nodes, not just leaves
+//	
+
+
+
+todo: 
+- write readme
+- comment stately
+- update stately_node + stately_min
+
+
+
+//Create a new state object
+state = stately(
+{
+	val: "number", // Leafs are always "number" or "string"
+	kids: {
+		two: "string", //objects can have lists + numbers + strings
+		three: {
+			a: "number",
+			b: "string"
+		}
+	},
+	listy_loo: [ //each list item must match the sample list item's format.
+		{a:"number", b:"string", c:["number"]}
+	]
+}
+)
+
+/*
+state() //-> returns the whole state object
+state().val() //-> returns the number val is set to
+state().kids().two() //-> returns the state of "two"
+state().listy_loo(function(obj, type, index){ //type: general, remove, insert. index of change. 
+	return true;//to keep listener attached
+})//sets a 
+state().listy_loo()
+	.get(index)
+	.insert(index) //inserts from the template file. Fill in the values afterwards.
+	.remove(index)
+	.length()
+state().val(5) //-> sets the leaf to 5. Also triggers all events listening to the leaf
+state.val(function(state){
+	//called whenever "state" itself is changed
+	//return true from this function to re-register yourself as a state listener, any other return (or no return) will unregister you
+})
+//Todo: 
+//	-access history
+	/*
+
+		history: [
+			{
+				value: "old_value",
+			 	tags:  "tags to let you search history for a previous state",
+			 	why:   "reason for transaction",
+			 	type:  "in" || "out"
+			 }
+		] //every time "is" is called, we an "in or out" and an optional reason for the transaction
+	*
+	-Fix up API for values in lists. UGLY!
+*/
