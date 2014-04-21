@@ -20,7 +20,7 @@ or
 
 Make a state object (I *strongly* recomend only making one per page/project):
 
-```javascript
+```js
     var state = stately({
         ready: "boolean",
     	kids: {
@@ -41,47 +41,80 @@ Object Types
 ------------
 
 State objects are made up of 3 sub objects:
-- Leafs: ```"boolean```, ```"string"```, or ```"number"```.
-- Lists: ```[ "boolean" ]```. (Whatever state object is inside of the [ ] defines what each element in the list will look like.)
-- Objects:```{ a: "boolean", b: "string" }```.
+- Leafs: ```"boolean"```, ``` "string" ```, or ``` "number" ```.
+- Lists: ``` [ "boolean" ] ```. (Whatever state object is inside of the [ ] defines what each element in the list will look like.)
+- Objects:``` { a: "boolean", b: "string" } ```.
 
 
 Working with objects/leaves
 ---------------------------
 
 - Writing to a leaf:
-    > ```state().ready(true) //-> 'ready' is now 'true'``` 
 
-    > ```state().kids().three().a(5) //-> 'a' is now '5'```
+    ```js 
+        state().ready(true) //-> 'ready' is now 'true' 
+        
+        
+        js state().kids().three().a(5) //-> 'a' is now '5' 
+    ``` 
+
 - Reading from a leaf:
-    > ```state().ready() //-> value of ready```
+
+    ```js 
+      state().ready() //-> value of ready 
+    ```
+
 - Listening to a leaf:
-    > ```
+
+    ```js
         state().ready(function(ready){
             console.log(ready); // -> the value of ready
             return true; // MUST RETURN TRUE TO RE-REGISTER THE EVENT. 
                          //Any other return (or no return) will un-register.
         })
     ```
-    > *** Note that you cannot listen to "Objects", only "Leafs".
+
+    ** Note that you cannot listen to "Objects", only "Leafs".
 
 Working with Lists
 ------------------
 - Grab a reference to a list:
-    > ``` var a_list = state().listy_loo ```
+
+    ```js 
+      var a_list = state().listy_loo 
+    ```
+
 - Lists present 4 functions:
     - length
-        > ``` a_list().length() //-> length of the list ```
+    
+        ```js 
+          a_list().length() //-> length of the list 
+        ```
+
     - insert
-        > ```a_list().insert(0)```
+    
+        ```js 
+            a_list().insert(0) 
+        ```
         
-        > //-> creates a new, blank copy of the state object you specified when you called 'stately'. In tihs case, it will be a ```{a:"number", b:"string", c:["number"]}``` at index 0
+        > //-> creates a new, blank copy of the state object you specified when you called 'stately'. In tihs case, it will be a ``` {a:"number", b:"string", c:["number"]} ``` at index 0
+        
     - remove
-        > ```a_list().remove(0) //-> removes the element at index 0.```
+    
+        ```js 
+          a_list().remove(0) //-> removes the element at index 0. 
+        ```
+        
     - get
-        > ```a_list().get(0) //-> gets the element at index 0.```
+    
+        ```js 
+          a_list().get(0) //-> gets the element at index 0. 
+        ```
+        
 - Lists support Events as well. (note that they do not alert you to changes to the lists element's values, only changes to the list itself):
-        > ``` 
+
+          
+        ```js
             a_list(function(type, index){
                 //type will be:
                 //      "general" -> triggered the first time an event is registered
@@ -94,20 +127,22 @@ Working with Lists
         ```
 
 
-Notes
------
+Notes & Todos
+-------------
 
 - I made this project to facilitate another project I'm working on. I'll link to it once I'm done so it can stand as a sample of how-to use Stately.
 - I plan to add "history" logging soon. I debug from the console more than I use break-points. Because every access is a function, I can make my commens parameters and keep a history of when and how each value in the state-tree is changed. I think it'll help debugging. We'll see.
+- It should be easy to serialize the state to-and-from json. I could save out the state of the web-page that way.
+- I want to add a forEach function to the List object. Make itterating a little less silly.
 
 
 Other Fun Uses
 -------------
 
 - declare your own "micro states" and enforce type.
-    - ```var guy = stately("string");```
-    - ```guy("hello") //-> assignment OK!```
-    - ```guy(false) //-> TypeError, false isn't a string!```
-    - or, a list where each item has to be a certain object: ```var history = stately([{event:"string", year:"number"});```
+    - ``` var guy = stately("string"); ```
+    - ``` guy("hello") //-> assignment OK! ```
+    - ``` guy(false) //-> TypeError, false isn't a string! ```
+    - or, a list where each item has to be a certain object: ``` var history = stately([{event:"string", year:"number"}); ```
 
 
