@@ -1,6 +1,6 @@
 //Test may be a strong word for this file. It's more like a... testbed. 
 
-require("../stately");
+require("../stately-min");
 
 //Create a new state object
 state = stately(

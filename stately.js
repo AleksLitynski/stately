@@ -98,7 +98,7 @@
 	function leaf_to_state(json_leaf){
 		type_error(typeof json_leaf != "string");
 		//prevent arrays and lists from becoming leafs.
-		type_error(json_leaf != "boolean" || json_leaf != "string" || json_leaf != "number");
+		type_error(json_leaf != "boolean" && json_leaf != "string" && json_leaf != "number");
 
 		var type = json_leaf;
 		var value;
@@ -152,7 +152,7 @@
 	//will suffice.
 	function type_error(test){
 		if(test){
-			throw "TypeError";
+			throw new Error("TypeError");
 		}
 	}
 
