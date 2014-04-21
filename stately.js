@@ -136,7 +136,9 @@
 			//A function is given. Register the listener and call it once.
 			if(typeof input == "function"){
 				index = listeners.push(input)-1;
-				call_listener(index);
+				if(typeof value != 'undefined'){
+					call_listener(index);
+				}
 			}
 
 			//A new value is given. If it's type matches the proper type, 
